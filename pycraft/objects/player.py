@@ -13,10 +13,13 @@ class Player(Character):
         self.dy = 0
         # A dict of player blocks with their respective quantities
         self.inventory = Storage()
-        self.inventory.store_item(0, 'Brick', 5)
-        self.inventory.store_item(1, 'Grass', 7)
-        self.inventory.store_item(2, 'WeakStone', 10)
-        self.inventory.store_item(3, 'Sand', 5)
+        self.inventory.store_item(0, 'Brick', 99999)
+        self.inventory.store_item(1, 'Grass', 99999)
+        self.inventory.store_item(2, 'WeakStone', 99999)
+        self.inventory.store_item(3, 'Sand', 99999)
+        self.inventory.store_item(4, 'Cobus', 99999)
+        self.inventory.store_item(5, 'Nicholas', 99999)
+        self.inventory.store_item(6, 'Joshua', 99999)
 
         self.current_item = 'Brick'
         self.current_item_index = 0

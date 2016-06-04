@@ -25,7 +25,7 @@ class GameState:
         pass
 
     """
-        Think about those resposabilities from the GameState.
+        Think about those responsibilities from the GameState.
         Some game states may only need to be updated, while another only need
         to be drawn
     """

@@ -1,5 +1,7 @@
 import pyglet.app
 
+from pkg_resources import resource_filename
+
 from pycraft.window import Window
 from pycraft.world import World
 from pycraft.objects.player import Player
@@ -7,6 +9,12 @@ from pycraft.configuration import ConfigurationLoader
 
 WINDOW_CAPTION = 'PyCraft'
 
+pyglet.options['audio'] = ('openal', 'pulse')
+import pyglet.media
+
+music_file = resource_filename(__name__, "music.wav")
+music = pyglet.media.load(music_file, streaming=False)
+music.play()
 
 def main():
     # Load configuration file

@@ -36,7 +36,7 @@ class ConfigurationLoader:
 
     def __init__(self):
         """
-            Initialize with defaut values
+            Initialize with default values
         """
         self.game_config = {
             "window": {

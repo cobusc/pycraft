@@ -6,7 +6,7 @@ from pyglet import image
 from pyglet.gl import GL_QUADS
 from pyglet.graphics import Batch, TextureGroup
 
-from pycraft.objects import Grass, Sand, Stone
+from pycraft.objects import Grass, Sand, Stone, Cobus, Nicholas, Joshua
 from pycraft.opengl import PycraftOpenGL
 from pycraft.util import normalize, sectorize, reverse_sectorize, \
     cube_vertices, cube_shade
@@ -75,7 +75,7 @@ class World:
         return None, None
 
     def exposed(self, position):
-        """Returns False is given `position` is surrounded on all 6 sides by
+        """Returns False if given `position` is surrounded on all 6 sides by
         blocks, True otherwise.
         """
         x, y, z = position

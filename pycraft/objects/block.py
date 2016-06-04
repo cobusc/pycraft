@@ -9,6 +9,9 @@ GRASS = tex_coords((1, 0), (0, 1), (0, 0))
 SAND = tex_coords((1, 1), (1, 1), (1, 1))
 BRICK = tex_coords((2, 0), (2, 0), (2, 0))
 STONE = tex_coords((2, 1), (2, 1), (2, 1))
+COBUS = tex_coords((3, 0), (3, 0), (3, 0))
+NICHOLAS = tex_coords((3, 1), (3, 1), (3, 1))
+JOSHUA = tex_coords((3, 2), (3, 2), (3, 2))
 
 
 class Block(WorldObject):
@@ -64,3 +67,21 @@ class WeakStone(Block):
 class Stone(Block):
     identifier = 'Stone'
     texture = STONE
+
+
+class Cobus(Block):
+    identifier = 'Cobus'
+    texture = COBUS
+    breakable = True
+
+
+class Nicholas(Block):
+    identifier = 'Nicholas'
+    texture = NICHOLAS
+    breakable = True
+
+
+class Joshua(Block):
+    identifier = 'Joshua'
+    texture = JOSHUA
+    breakable = True

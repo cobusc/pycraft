@@ -21,7 +21,7 @@ def cube_vertices(x, y, z, n):
 
 
 def cube_shade(x, y, z, n):
-    """Return the color diference between the sides of the cube."""
+    """Return the color difference between the sides of the cube."""
     return [
         1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,  # top
         0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3,  # bottom

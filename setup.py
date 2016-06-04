@@ -103,6 +103,7 @@ setup(
     # Package Properties
     packages=packages,
     include_package_data=True,
+    package_data={'': ['*.mp3']},
     platforms=['any'],
     classifiers=classifiers,
     zip_safe=False,

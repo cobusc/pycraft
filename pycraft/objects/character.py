@@ -38,7 +38,8 @@ class Character(WorldObject):
         # First element is -1 when moving forward, 1 when moving back, and 0
         # otherwise. The second element is -1 when moving left, 1 when moving
         # right, and 0 otherwise.
-        self.strafe = [0, 0]
+        # The 3rd and 4th elements are for looking up/down and turning left/right
+        self.strafe = [0, 0, 0, 0]
         # This is strafing in the absolute up/down position, not
         # relative to where the player is facing. 1 when moving up, -1 when moving down
         self.strafe_z = 0
@@ -78,7 +79,10 @@ class Character(WorldObject):
     def jump(self):
         """Increases vertical velocity, if grounded. If flying, moves upwards"""
         if self.flying:
-            self.strafe_up()
+            if self.strafe_z != 0:
+                self.strafe_z = 0
+            else:
+                self.strafe_up()
         else:
             if self.dy == 0:
                 self.dy = self.jump_speed
@@ -96,9 +100,9 @@ class Character(WorldObject):
         vector : tuple of len 3
             Tuple containing the velocity in x, y, and z respectively.
         """
-        if any(self.strafe):
+        if any(self.strafe[0:2]):
             x, y = self.rotation
-            strafe = math.degrees(math.atan2(*self.strafe))
+            strafe = math.degrees(math.atan2(self.strafe[0], self.strafe[1]))
             y_angle = math.radians(y)
             x_angle = math.radians(x + strafe)
             if self.flying:
@@ -135,6 +139,14 @@ class Character(WorldObject):
             The change in time since the last call.
         objects: list of blocks
         """
+        if any(self.strafe[2:4]):
+            m = 0.15
+            x, y = self.rotation
+            x, y = x + self.strafe[3] * m, \
+                   y + self.strafe[2] * m
+            y = max(-90, min(90, y))
+            self.rotation = (x, y)
+
         speed = self.config['flying_speed'] if self.flying else self.config['walking_speed']
         d = dt * speed  # distance covered this tick.
         dx, dy, dz = self.get_motion_vector()

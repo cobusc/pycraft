@@ -34,6 +34,13 @@ class GameStateRunning(GameState):
             x=width - 10, y=10, anchor_x='right', anchor_y='bottom',
             color=(0, 0, 0, 255))
 
+        # Initialise joystick
+        joysticks = pyglet.input.get_joysticks()
+        if joysticks:
+            joystick = joysticks[0]
+            joystick.open()
+            joystick.push_handlers(self)
+
     def on_mouse_press(self, x, y, button, modifiers):
         vector = self.player.get_sight_vector()
         block, previous = self.world.hit_test(self.player.position, vector)
@@ -90,6 +97,86 @@ class GameStateRunning(GameState):
             self.player.strafe_down()
         elif symbol == getattr(key, controls['down']):
             self.player.strafe_up()
+
+    def on_joybutton_press(self, joystick, button):
+        vector = self.player.get_sight_vector()
+        block, previous = self.world.hit_test(self.player.position, vector)
+        if button == 0:
+            player_x, player_y, player_z = normalize(self.player.position)
+            if previous and previous != (player_x, player_y, player_z) and \
+                    previous != (player_x, player_y - 1, player_z):
+                # make sure the block isn't in the players head or feet
+                if self.player.current_item:
+                    self.world.add_block(previous, get_block(self.player.get_block()))
+
+        elif button == 1:
+            self.player.jump()
+
+        elif button == 2 and block:
+            texture = self.world.objects[block]
+            if texture.hit_and_destroy():
+                self.world.remove_block(block)
+
+        elif button == 3:
+            self.player.fly()
+
+        elif button == 4:
+            self.player.previous_inventory_item()
+
+        elif button == 5:
+            self.player.next_inventory_item()
+
+        print('Button %s pressed' % button)
+
+    def on_joybutton_release(self, joystick, button):
+        print('Button %s released' % button)
+
+    def on_joyaxis_motion(self, joystick, axis, value):
+        print(f"{axis} = {value}")
+        if axis in ["rx", "ry"]:
+            if abs(value) < 0.05:
+                value = 0
+
+            if axis == "rx":  # Turn left/right
+                self.player.strafe[3] = value
+            elif axis == "ry":  # Look up/down
+                self.player.strafe[2] = -value
+
+        elif axis in ["hat_x", "hat_y"]:
+            int_value = int(value)
+            if axis == "hat_y":
+                if int_value == 1:
+                    self.player.strafe_forward()
+                elif int_value == -1:
+                    self.player.strafe_backward()
+                elif int_value == 0:
+                    self.player.strafe[0] = 0
+
+            elif axis == "hat_x":
+                if int_value == 1:
+                    self.player.strafe_right()
+                elif int_value == -1:
+                    self.player.strafe_left()
+                elif int_value == 0:
+                    self.player.strafe[1] = 0
+
+        elif axis in ["x", "y"]:
+            if abs(value) < 0.05:
+                value = 0
+
+            if axis == "y":
+                self.player.strafe[0] = value
+
+            elif axis == "x":
+                self.player.strafe[1] = value
+
+    def on_joyhat_motion(self, joystick, hat_x, hat_y):
+        print(f"Hat = ({hat_x},{hat_y})")
+        m = 0.15
+        x, y = self.player.rotation
+        x, y = x + hat_x * m, y + hat_y * m
+        y = max(-90, min(90, y))
+        self.player.rotation = (x, y)
 
     def on_resize(self, width, height):
         # label

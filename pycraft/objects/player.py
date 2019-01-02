@@ -40,6 +40,22 @@ class Player(Character):
         self.current_item_index = index
         self.current_item = self.inventory.get_item_name(self.current_item_index)
 
+    def next_inventory_item(self):
+        """
+        Change selected element to the next one in the inventory
+        :return:None
+        """
+        self.current_item_index = (self.current_item_index + 1) % len(self.inventory.items)
+        self.current_item = self.inventory.get_item_name(self.current_item_index)
+
+    def previous_inventory_item(self):
+        """
+        Change selected element to the previous one in the inventory
+        :return:None
+        """
+        self.current_item_index = (self.current_item_index - 1) % len(self.inventory.items)
+        self.current_item = self.inventory.get_item_name(self.current_item_index)
+
     def get_sight_vector(self):
         """Returns the current line of sight vector indicating the direction the
         player is looking.
